@@ -147,6 +147,7 @@ public class getUsers {
                 .when().get("https://reqres.in/api/user/2")
                 .then()
                 .statusCode(200);
+        System.out.println("testMultipleHeaders executed successfully");
     }
     @Test
     public void testMultipleHeaderUsingMap(){
