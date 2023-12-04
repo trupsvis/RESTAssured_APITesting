@@ -26,7 +26,6 @@ import static org.testng.Assert.assertEquals;
 import static util.jsonReader.getJsonArray;
 
 public class getUsers {
-
     SoftAssertionUtil softAssertion= new SoftAssertionUtil();
     @Test
     public void getUserData(){
@@ -147,7 +146,7 @@ public class getUsers {
                 .when().get("https://reqres.in/api/user/2")
                 .then()
                 .statusCode(200);
-        System.out.println("testMultipleHeaders executed successfully");
+        System.out.println("testMultipleHeaders executed successfullygit ");
     }
     @Test
     public void testMultipleHeaderUsingMap(){
