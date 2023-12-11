@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="API Automation Smoke Suite">
+
+<!--    Listerners are used to retry any failing testcases to see if they are passed in the next execution-->
+<!--    <listeners>-->
+<!--        <listener class-name="util.RetryListener"></listener>-->
+<!--    </listeners>-->
+<!--    <test name="Trying too use the Retry functionality">-->
+<!--        <classes>-->
+<!--            <class name="UserManagement.getErgast"></class>-->
+<!--        </classes>-->
+<!--    </test>-->
     <test name="API testcases for getUsers" parallel="classes" thread-count="2">
         <classes>
             <class name="UserManagement.getUsers"></class>
