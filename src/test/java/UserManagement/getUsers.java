@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import util.PropertyReader;
 import util.SoftAssertionUtil;
 import util.jsonReader;
@@ -23,10 +24,11 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 import static util.jsonReader.getJsonArray;
 
 public class getUsers {
-    SoftAssertionUtil softAssertion= new SoftAssertionUtil();
+    //SoftAssertionUtil softAssertion= new SoftAssertionUtil();
     @Test
     public void getUserData(){
         given().
@@ -237,17 +239,16 @@ public class getUsers {
 
     @Test
     public void softAssertion(){
-        SoftAssertionUtil softAssertion= new SoftAssertionUtil();
         System.out.println("softAssert");
-        softAssertion.assertTrue(true,"");
-        softAssertion.assertTrue(false, "this is false");
-        softAssertion.assertAll();
+        SoftAssertionUtil.assertTrue(true,"");
+        SoftAssertionUtil.assertTrue(false, "this is false");
+        SoftAssertionUtil.assertAll();
     }
 
     @Test
     public void hardAssertion(){
         System.out.println("hardAssert");
-        Assert.assertTrue(false);
+        assertTrue(false);
         System.out.println("hardAssert");
     }
 
@@ -260,8 +261,8 @@ public class getUsers {
                 .then().statusCode(200).extract().response();
 
         response.then().body("data",hasSize(6));
-        softAssertion.assertEquals(response.getStatusCode(),StatusCode.SUCCESS.code,"Status code is not 200");
-        softAssertion.assertAll();
+        SoftAssertionUtil.assertEquals(response.getStatusCode(),StatusCode.SUCCESS.code,"Status code is not 200");
+        SoftAssertionUtil.assertAll();
         System.out.println("validateWithSoftAssertionUtil executed successfully");
     }
 

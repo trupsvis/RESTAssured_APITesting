@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.post;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class postUsers {
@@ -266,5 +265,76 @@ public class postUsers {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    public void validatePatchWithResponsePOJO(){
+        String job="Leader";
+        postRequestBody patchRequest = new postRequestBody();
+        patchRequest.setJob(job);
+
+        try {
+            Response response = given()
+                    .header("Content-Type","application/json")
+                    .body(patchRequest)
+                    .when()
+                    .patch("https://reqres.in/api/users/4");
+
+            postRequestBody responseBody = response.as(postRequestBody.class);
+            System.out.println(responseBody.getJob());
+            assertEquals(responseBody.getJob(),job);
+            assertEquals(response.getStatusCode(), StatusCode.SUCCESS.code);
+            System.out.println("Validate Patch with Response POJO executed Successfully");
+            System.out.println(response.getBody().asString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Test
+    public void validatePostWithResponsePOJO(){
+        String name = "Banglore";
+        String temp = "35";
+        List<String> listLanguage = new ArrayList<>();
+        listLanguage.add("Java");
+        listLanguage.add("Python");
+        listLanguage.add("SQL");
+
+        cityRequest cityRequest1 = new cityRequest();
+        cityRequest1.setName(name);
+        cityRequest1.setTemperature(temp);
+        cityRequest cityRequests2 = new cityRequest();
+        cityRequests2.setName("Delhi");
+        cityRequests2.setTemperature("40");
+        List<cityRequest> cityRequests = new ArrayList<>();
+        cityRequests.add(cityRequest1);
+        cityRequests.add(cityRequests2);
+
+        postRequestBody postRequest = new postRequestBody();
+        postRequest.setJob("morphues");
+        postRequest.setName("leader");
+        postRequest.setLanguages(listLanguage);
+        postRequest.setCityRequestBody(cityRequests);
+
+
+        try {
+            Response response = given()
+                    .header("Content-Type","application/json")
+                    .body(postRequest)
+                    .when()
+                    .post("https://reqres.in/api/users");
+
+            postRequestBody responseBody = response.as(postRequestBody.class);
+            System.out.println(responseBody.getCityRequestBody().get(0).getName());
+            System.out.println(responseBody.getCityRequestBody().get(0).getTemperature());
+            System.out.println(responseBody.getLanguages());
+            assertEquals(responseBody.getCityRequestBody().get(0).getName(),name);
+            assertEquals(responseBody.getCityRequestBody().get(0).getTemperature(),temp);
+            assertEquals(response.getStatusCode(), StatusCode.CREATED.code);
+            System.out.println("Validate Post using POJOListObject executed Successfully");
+            System.out.println(response.getBody().asString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
