@@ -4,12 +4,17 @@ import core.StatusCode;
 import io.restassured.response.Response;
 import org.apache.commons.io.IOUtils;
 import org.testng.annotations.Test;
+import pojo.cityRequest;
+import pojo.postRequestBody;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.post;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class postUsers {
@@ -133,4 +138,133 @@ public class postUsers {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    public void validatePostUsingPOJO(){
+
+        postRequestBody postRequest = new postRequestBody();
+        postRequest.setJob("morphues");
+        postRequest.setName("leader");
+
+        try {
+            Response response = given()
+                    .header("Content-Type","application/json")
+                    .body(postRequest)
+                    .when()
+                    .post("https://reqres.in/api/users");
+
+            assertEquals(response.getStatusCode(), StatusCode.CREATED.code);
+            System.out.println("validatePostUsingPOJO executed Successfully");
+            System.out.println(response.getBody().asString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void validatePostUsingPOJOWithList(){
+        List<String> listLanguage = new ArrayList<>();
+        listLanguage.add("Java");
+        listLanguage.add("Python");
+        listLanguage.add("SQL");
+
+        postRequestBody postRequest = new postRequestBody();
+        postRequest.setJob("morphues");
+        postRequest.setName("leader");
+        postRequest.setLanguages(listLanguage);
+        try {
+            Response response = given()
+                    .header("Content-Type","application/json")
+                    .body(postRequest)
+                    .when()
+                    .post("https://reqres.in/api/users");
+
+            assertEquals(response.getStatusCode(), StatusCode.CREATED.code);
+            System.out.println("Validate Post Using POJO With List executed Successfully");
+            System.out.println(response.getBody().asString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void validatePUTUsingPOJO(){
+        postRequestBody putRequest = new postRequestBody();
+        putRequest.setJob("Leader");
+        putRequest.setName("Trupti");
+
+        try {
+            Response response = given()
+                    .header("Content-Type","application/json")
+                    .body(putRequest)
+                    .when()
+                    .post("https://reqres.in/api/users/2");
+
+            assertEquals(response.getStatusCode(), StatusCode.CREATED.code);
+            System.out.println("Validate PUT Using POJO executed Successfully");
+            System.out.println(response.getBody().asString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void validatePatchWithStringUsingPOJO(){
+        postRequestBody patchRequest = new postRequestBody();
+        patchRequest.setName("Trupti");
+
+        try {
+            Response response = given()
+                    .header("Content-Type","application/json")
+                    .body(patchRequest)
+                    .when()
+                    .patch("https://reqres.in/api/users/4");
+
+            assertEquals(response.getStatusCode(), StatusCode.SUCCESS.code);
+            System.out.println("validate Patch using POJO executed Successfully");
+            System.out.println(response.getBody().asString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void validatePostUsingPOJOListObject(){
+        List<String> listLanguage = new ArrayList<>();
+        listLanguage.add("Java");
+        listLanguage.add("Python");
+        listLanguage.add("SQL");
+
+        cityRequest cityRequest1 = new cityRequest();
+        cityRequest1.setName("Banglore");
+        cityRequest1.setTemperature("35");
+        cityRequest cityRequests2 = new cityRequest();
+        cityRequests2.setName("Delhi");
+        cityRequests2.setTemperature("40");
+        List<cityRequest> cityRequests = new ArrayList<>();
+        cityRequests.add(cityRequest1);
+        cityRequests.add(cityRequests2);
+
+        postRequestBody postRequest = new postRequestBody();
+        postRequest.setJob("morphues");
+        postRequest.setName("leader");
+        postRequest.setLanguages(listLanguage);
+        postRequest.setCityRequestBody(cityRequests);
+
+
+        try {
+            Response response = given()
+                    .header("Content-Type","application/json")
+                    .body(postRequest)
+                    .when()
+                    .post("https://reqres.in/api/users");
+
+            assertEquals(response.getStatusCode(), StatusCode.CREATED.code);
+            System.out.println("Validate Post using POJOListObject executed Successfully");
+            System.out.println(response.getBody().asString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
